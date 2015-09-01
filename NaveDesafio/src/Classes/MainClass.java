@@ -35,14 +35,13 @@ public class MainClass {
 	
 	private static float[] AvioesDistancia(String File,
 			float[] avioesDistancia, float[] coordenadasX, float[] coordenadasY) {
-
+		boolean firstTime = false;
 		for (int i = 1; i < coordenadasY.length; i++) {
 			int j = i;
+			
 			while(j < coordenadasY.length){
 				if (i == j) {
-
 					j++;
-
 				}
 				if (!(j >= coordenadasX.length)) {
 
@@ -50,10 +49,11 @@ public class MainClass {
 					float y = coordenadasY[i] - coordenadasY[j];
 
 					float res = (float) Math.sqrt((x * x) + (y * y));
-					if(i == 1){
+					if(!firstTime){
 						avioesDistancia[0] = i;
 						avioesDistancia[1] = j;
 						avioesDistancia[2] = res;
+						firstTime = true;
 					}else if (res < avioesDistancia[2]) {
 						avioesDistancia[0] = i;
 						avioesDistancia[1] = j;
