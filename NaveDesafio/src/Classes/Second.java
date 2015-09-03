@@ -1,14 +1,10 @@
-package Classes;
+/*package Classes;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
-import java.io.FileWriter;
 import java.io.IOException;
-import java.io.PrintWriter;
-import java.util.ArrayList;
-import java.util.Scanner;
 
-public class MainClass {
+public class Second {
 
 	public static void main(String[] args) throws IOException {
 		long timeIni = System.currentTimeMillis(), timeFinal, deltaTime;
@@ -33,16 +29,12 @@ public class MainClass {
 
 		FileReader arquivo = new FileReader(File);
 		BufferedReader lerArq = new BufferedReader(arquivo);
-
-		float[] coordX = null;
-		float[] coordY = null;
-
+		Aviao[] coord = null;
 		// Número de Avioes
 		boolean closeArq = false;
 		String linha = lerArq.readLine();
 		while (!closeArq) {
-			coordX = new float[Integer.parseInt(linha)];
-			coordY = new float[coordX.length];
+			coord = new Aviao[Integer.parseInt(linha)];
 			closeArq = true;
 		}
 		linha = lerArq.readLine();
@@ -51,8 +43,10 @@ public class MainClass {
 		int contSplit = 0;
 		while (linha != null) {
 			String[] splitT = linha.split(" ");
-			coordX[contSplit] = Float.parseFloat(splitT[0]);
-			coordY[contSplit] = Float.parseFloat(splitT[1]);
+			coord[contSplit] = new Aviao();
+			
+			coord[contSplit].x = Float.parseFloat(splitT[0]);
+			coord[contSplit].y = Float.parseFloat(splitT[1]);
 
 			contSplit++;
 
@@ -61,22 +55,22 @@ public class MainClass {
 
 		arquivo.close();
 		int cont = 0;
-		for (int i = 0; i < coordY.length; i++) {
-			for (int j = i; j < coordY.length; j++) {
+		for (int i = 0; i < coord.length; i++) {
+			for (int j = i; j < coord.length; j++) {
 				if (i != j) {
 					if (!firstTime) {
-						float x = coordX[i] - coordX[j];
-						float y = coordY[i] - coordY[j];
+						float x = coord[i].x - coord[j].x;
+						float y = coord[i].y - coord[j].y;
 						float res = (float) Math.sqrt((x * x) + (y * y));
 						avioesDistancia[0] = i;
 						avioesDistancia[1] = j;
 						avioesDistancia[2] = res;
 						firstTime = true;
-					} else if ((1.05 * coordX[i]) > coordX[j] && (coordX[i] / 2) < coordX[j]) {
-						if ((1.05 * coordY[i]) > coordY[j] && (coordY[i] / 2) < coordY[j]) {
+					} else if ((1.05 * coord[i].x) > coord[j].x && (coord[i].x / 2) < coord[j].x) {
+						if ((1.05 * coord[i].y) > coord[j].y && (coord[i].y / 2) < coord[j].y) {
 							
-							float x = coordX[i] - coordX[j];
-							float y = coordY[i] - coordY[j];
+							float x = coord[i].x - coord[j].x;
+							float y = coord[i].y - coord[j].y;
 
 							float res = (float) Math.sqrt((x * x) + (y * y));
 							cont++;
@@ -96,4 +90,4 @@ public class MainClass {
 		return avioesDistancia;
 	}
 
-}
+}*/
