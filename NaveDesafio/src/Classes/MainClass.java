@@ -12,105 +12,91 @@ public class MainClass {
 
 	public static void main(String[] args) throws IOException {
 		long timeIni = System.currentTimeMillis(), timeFinal, deltaTime;
-		//CriarTxt("arquivo.txt");
+		// CriarTxt("arquivo.txt");
 		float[] resultadoDistancia = new float[3];
 
-		float[] coordenadasX = new float[NumeroAvioes("arquivo.txt")+1];
-		float[] coordenadasY = new float[coordenadasX.length];
-
-		PopularArray("arquivo.txt", coordenadasX, coordenadasY);
-
-		AvioesDistancia("arquivo.txt", resultadoDistancia, coordenadasX,
-				coordenadasY);
+		AvioesDistancia("arquivo.txt", resultadoDistancia);
 
 		timeFinal = System.currentTimeMillis();
-		
+
 		deltaTime = timeFinal - timeIni;
-		
-		System.out.printf(
-				"O avião %.0f com o avião %.0f tem a distancia: %.2f\nTime: %d (ms)",
-				resultadoDistancia[0], resultadoDistancia[1],
-				resultadoDistancia[2], deltaTime);
+
+		System.out
+				.printf("O avião %.0f com o avião %.0f tem a distancia: %.2f\nTime: %d (ms)",
+						resultadoDistancia[0] + 1, resultadoDistancia[1] + 1,
+						resultadoDistancia[2], deltaTime);
 	}
-	
-	private static float[] AvioesDistancia(String File,
-			float[] avioesDistancia, float[] coordenadasX, float[] coordenadasY) {
+
+	private static float[] AvioesDistancia(String File, float[] avioesDistancia)
+			throws IOException {
 		boolean firstTime = false;
-		for (int i = 1; i < coordenadasY.length; i++) {
-			int j = i;
-			
-			while(j < coordenadasY.length){
-				if (i == j) {
-					j++;
-				}
-				if (!(j >= coordenadasX.length)) {
 
-					float x = coordenadasX[i] - coordenadasX[j];
-					float y = coordenadasY[i] - coordenadasY[j];
+		FileReader arquivo = new FileReader(File);
+		BufferedReader lerArq = new BufferedReader(arquivo);
 
-					float res = (float) Math.sqrt((x * x) + (y * y));
-					if(!firstTime){
+		float[] coordX = null;
+		float[] coordY = null;
+
+		// Número de Avioes
+		boolean closeArq = false;
+		String linha = lerArq.readLine();
+		while (!closeArq) {
+			coordX = new float[Integer.parseInt(linha)];
+			coordY = new float[coordX.length];
+			closeArq = true;
+		}
+		linha = lerArq.readLine();
+
+		// Populando
+		int contSplit = 0;
+		while (linha != null) {
+			String[] splitT = linha.split(" ");
+			coordX[contSplit] = Float.parseFloat(splitT[0]);
+			coordY[contSplit] = Float.parseFloat(splitT[1]);
+
+			contSplit++;
+
+			linha = lerArq.readLine();
+		}
+
+		arquivo.close();
+
+		for (int i = 0; i < coordY.length; i++) {
+			// int j = i;
+
+			for (int j = i; j < coordY.length; j++) {
+				if (i != j) {
+					if (!firstTime) {
+						float x = coordX[i] - coordX[j];
+						float y = coordY[i] - coordY[j];
+
+						float res = (float) Math.sqrt((x * x) + (y * y));
+
 						avioesDistancia[0] = i;
 						avioesDistancia[1] = j;
 						avioesDistancia[2] = res;
 						firstTime = true;
-					}else if (res < avioesDistancia[2]) {
-						avioesDistancia[0] = i;
-						avioesDistancia[1] = j;
-						avioesDistancia[2] = res;
+					} else if ((1.1 * coordX[i]) > coordX[j]
+							&& (coordX[i] / 2) < coordX[j]) {
+						if ((1.1 * coordY[i]) > coordY[j]
+								&& (coordY[i] / 2) < coordY[j]) {
+							float x = coordX[i] - coordX[j];
+							float y = coordY[i] - coordY[j];
+
+							float res = (float) Math.sqrt((x * x) + (y * y));
+							if (res < avioesDistancia[2]) {
+								avioesDistancia[0] = i;
+								avioesDistancia[1] = j;
+								avioesDistancia[2] = res;
+							}
+						}
+
 					}
+
 				}
-				j++;
 			}
 		}
 		return avioesDistancia;
 	}
 
-	private static int NumeroAvioes(String File) {
-		try {
-			FileReader arquivo = new FileReader(File);
-			BufferedReader lerArq = new BufferedReader(arquivo);
-
-			String linha = lerArq.readLine();
-			while (linha != null) {
-				return Integer.parseInt(linha);
-			}
-			linha = lerArq.readLine();
-
-			arquivo.close();
-		} catch (IOException e) {
-			System.err.printf("Erro na abertura do arquivo: %s.\n",
-					e.getMessage());
-		}
-		return 0;
-	}
-
-	private static void PopularArray(String File, float[] coordenadasX,
-			float[] coordenadasY) {
-		try {
-			FileReader arquivo = new FileReader(File);
-			BufferedReader lerArq = new BufferedReader(arquivo);
-
-			String line = lerArq.readLine();
-			line = lerArq.readLine();
-			int contSplit = 1;
-
-			while (line != null) {
-				String[] splitT = line.split(" ");
-				coordenadasX[contSplit] = Float.parseFloat(splitT[0]);
-				coordenadasY[contSplit] = Float.parseFloat(splitT[1]);
-
-				contSplit++;
-				line = lerArq.readLine();
-			}
-
-			arquivo.close();
-		} catch (IOException e) {
-			System.err.printf("Erro na abertura do arquivo: %s.\n",
-					e.getMessage());
-		}
-		// return coordenadas;
-	}
-
-		
 }
