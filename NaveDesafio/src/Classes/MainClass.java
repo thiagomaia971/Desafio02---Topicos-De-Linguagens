@@ -62,16 +62,12 @@ public class MainClass {
 		arquivo.close();
 
 		for (int i = 0; i < coordY.length; i++) {
-			// int j = i;
-
 			for (int j = i; j < coordY.length; j++) {
 				if (i != j) {
 					if (!firstTime) {
 						float x = coordX[i] - coordX[j];
 						float y = coordY[i] - coordY[j];
-
 						float res = (float) Math.sqrt((x * x) + (y * y));
-
 						avioesDistancia[0] = i;
 						avioesDistancia[1] = j;
 						avioesDistancia[2] = res;
